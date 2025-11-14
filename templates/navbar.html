@@ -2,4 +2,14 @@
   <h1>StudyBud</h1>
 </a>
 
+<form action="{% url 'home' %}" method="GET">
+  <input
+    type="text"
+    name="q"
+    placeholder="Search rooms ..."
+    value="{{ request.GET.q }}"
+  />
+  {% comment %} <button type="submit">Search</button> {% endcomment %}
+</form>
+
 <hr />
