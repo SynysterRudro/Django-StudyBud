@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect 
+from django.http import HttpResponse
 from django.db.models import Q
 # Q is for complex queries adding and or operations
 from .models import Room,Topic
@@ -83,10 +84,14 @@ def createRoom(request):
      context ={'form':form}
      return render(request,'base/room_form.html',context) 
 
+@login_required(login_url='login')
 def update_Room(request, pk):
     room = Room.objects.get(id=pk)  # Define 'room' first
 
     form = RoomForm(instance=room)
+
+    if request.user != room.host:
+            return HttpResponse("You are not allowed here!!")
 
     if request.method == 'POST':
         form = RoomForm(request.POST, instance=room)
@@ -97,6 +102,7 @@ def update_Room(request, pk):
     context = {'form': form} 
     return render(request, 'base/room_form.html', context)
 
+@login_required(login_url='login')
 def delete_Room(request, pk):
      room = Room.objects.get(id=pk)     
      if request.method == 'POST':
