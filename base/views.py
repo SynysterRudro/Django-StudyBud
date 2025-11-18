@@ -19,6 +19,11 @@ from django.contrib.auth.decorators import login_required
  
 
 def loginPage(request):
+
+     if request.user.is_authenticated:
+          return redirect('home')
+
+
      if request.method == 'POST':
           username = request.POST.get('username') 
           password = request.POST.get('password')
@@ -104,7 +109,11 @@ def update_Room(request, pk):
 
 @login_required(login_url='login')
 def delete_Room(request, pk):
-     room = Room.objects.get(id=pk)     
+     room = Room.objects.get(id=pk) 
+
+     if request.user != room.host:
+          return HttpResponse("You are not allowed here!!")
+
      if request.method == 'POST':
           room.delete()
           return redirect('home')
