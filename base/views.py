@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+
 
 #  
  
@@ -34,6 +36,11 @@ def loginPage(request):
 
      context = {}
      return render(request, 'base/login_register.html',context)
+
+
+def logoutUser(request):
+     logout(request)
+     return redirect('home')
 
 
 def home(request):
@@ -62,6 +69,9 @@ def room(request,pk):
 
      return render(request, 'base/room.html',context)
 
+
+# the line says only logged in users can access this view
+@login_required(login_url='login')
 def createRoom(request):
      form = RoomForm()
      if request.method == 'POST':
