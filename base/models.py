@@ -22,6 +22,10 @@ class Room(models.Model):
 
     class Meta:
         ordering = ['-updated', '-created']
+    
+    def __str__(self):
+        # it [0:50] means first 50 characters  
+        return self.body[0:50]    
 
 
     def __str__(self):
@@ -34,6 +38,9 @@ class Message(models.Model):
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['-updated', '-created']
+
 
     def __str__(self):
         # it [0:50] means first 50 characters  
