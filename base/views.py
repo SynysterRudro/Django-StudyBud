@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Q
 # Q is for complex queries adding and or operations
-from .models import Room,Topic
+from .models import Room,Topic, Message
 from .forms import RoomForm
 
 # Create your views here.
@@ -84,10 +84,20 @@ def home(request):
 def room(request,pk):
      # return HttpResponse("Room Page") 
      room = Room.objects.get(id=pk) 
+     room_messages = room.message_set.all().order_by('-created')
+     participants = room.participants.all()
+     if request.method == 'POST':
+          message = Message.objects.create(
+               user=request.user,
+               room=room,
+               body=request.POST.get('body')
+          )
+          room.participants.add(request.user)
+          return redirect('room', pk=room.id)
      # for i in rooms:
      #       if i['id'] == int(pk):
      #            room = i
-     context = {'room': room} 
+     context = {'room': room, 'room_messages': room_messages, 'participants': participants} 
 
 
 
