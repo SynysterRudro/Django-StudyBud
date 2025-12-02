@@ -13,6 +13,7 @@ urlpatterns = [
     path('update-room/<str:pk>', views.update_Room, name='update-room'),
     path('delete-room/<str:pk>', views.delete_Room, name='delete-room'),
     path('delete-message/<str:pk>', views.delete_Message, name='delete-message'),
-    path('profile/<str:pk>/', views.userProfile, name='user-profile')
+    path('profile/<str:pk>/', views.userProfile, name='user-profile'),
+    path('update-user/', views.updateUser, name='update-user')
     
 ] 
